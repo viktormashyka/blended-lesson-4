@@ -1,5 +1,4 @@
-import { nanoid } from 'nanoid';
-
+import { useSelector } from 'react-redux';
 import {
   Container,
   Grid,
@@ -10,30 +9,17 @@ import {
   Text,
   Todo,
 } from 'components';
-import { useLocalStorage } from 'hooks';
+import { getTodos } from 'redux/slice';
 
 export function App() {
-  const [todos, setTodos] = useLocalStorage('todos', []);
-
-  const addTodo = text => {
-    const todo = {
-      id: nanoid(),
-      text,
-    };
-    setTodos(todos => [...todos, todo]);
-  };
-
-  const handleSubmit = data => addTodo(data);
-
-  const deleteTodo = id =>
-    setTodos(prevState => prevState.filter(todo => todo.id !== id));
+  const todos = useSelector(getTodos);
 
   return (
     <>
       <Header />
       <Section>
         <Container>
-          <SearchForm onSubmit={handleSubmit} />
+          <SearchForm />
 
           {todos.length === 0 && (
             <Text textAlign="center">There are no any todos ... </Text>
@@ -43,12 +29,7 @@ export function App() {
             {todos.length > 0 &&
               todos.map((todo, index) => (
                 <GridItem key={todo.id}>
-                  <Todo
-                    id={todo.id}
-                    text={todo.text}
-                    counter={index + 1}
-                    onClick={deleteTodo}
-                  />
+                  <Todo id={todo.id} text={todo.text} counter={index + 1} />
                 </GridItem>
               ))}
           </Grid>

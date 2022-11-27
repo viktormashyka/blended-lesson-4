@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 
 import { FiSearch } from 'react-icons/fi';
 import { FormBtn, InputSearch, SearchFormStyled } from './SearchForm.styled';
+import { useDispatch } from 'react-redux';
+import { addTodo } from 'redux/slice';
 
-export function SearchForm({ onSubmit }) {
+export function SearchForm() {
+  const dispatch = useDispatch();
   const [query, setQuery] = useState('');
 
   const handleInput = e => {
@@ -11,7 +14,8 @@ export function SearchForm({ onSubmit }) {
   };
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit(query);
+    dispatch(addTodo({ text: query }));
+    // onSubmit(query);
     setQuery('');
   };
   return (
